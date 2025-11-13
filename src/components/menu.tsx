@@ -22,7 +22,7 @@ export default function Menu() {
 
     return (
         <div className="text-spread-container">
-            <span style={{clear: "both", textAlign: "center", width: "100%"}}>Bianca Trihenea</span>
+            
             <div className="menu-stretch">
                 {menuItems.map((item) => {
                     return <MenuItem key={item["text"]}
@@ -31,7 +31,6 @@ export default function Menu() {
                                     class={item["class"]}/>;
                 })}
             </div>
-            <span style={{clear: "both", textAlign: "right", float: "right", width: "100%"}}>2025</span>
         </div>
     );
 }

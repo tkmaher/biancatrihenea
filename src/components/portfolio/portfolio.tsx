@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import ReactMarkdown from 'react-markdown';
 
 function ImageSpread({ imageURLs }: { imageURLs: string[] }) {
   return (
@@ -28,7 +29,7 @@ function PortfolioSpread({
     <div className="spread-container">
       <ImageSpread imageURLs={info.imageURLs} />
       <div className="text-spread-container">
-        <span>{info.description}</span>
+      <ReactMarkdown>{info.description}</ReactMarkdown>
       </div>
     </div>
   );
@@ -73,12 +74,10 @@ export default function PortfolioDisplay() {
     title,
     date,
     pid,
-    index,
   }: {
     title: string;
     date: string;
     pid: number;
-    index: number;
   }) => (
     <div
       className="menu-item-portfolio"
@@ -101,7 +100,6 @@ export default function PortfolioDisplay() {
           title={project.projectname}
           date={project.date}
           pid={project.pid}
-          index={index}
         />
       ))}
     </div>
@@ -150,7 +148,6 @@ export default function PortfolioDisplay() {
                 pid={currentProject}
                 title={projects[currentProject].projectname}
                 date={projects[currentProject].date}
-                index={0}
               />
             )}
           </div>

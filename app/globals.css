@@ -3,6 +3,7 @@
 :root {
   --background: rgb(66, 63, 57);
   --foreground: #e6e6e6;
+  --secondary: #888888;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,6 +21,13 @@ body {
   font-size: 1em;
   overflow-x: hidden;
   margin-bottom: 3em;
+}
+
+h2 {
+  background-color: var(--secondary);
+  color: var(--background);
+  padding: 2px;
+  margin-bottom: 5px;
 }
 
 .menu-stretch {
@@ -41,6 +49,10 @@ body {
   }
 }
 
+.info {
+  margin: 2em;
+}
+
 a:hover {
   text-decoration: underline;
 }
@@ -59,7 +71,6 @@ a:hover {
   width: 600px; 
   max-width: 100%;
   text-align: left; 
-  margin-bottom: 2em;
   text-align: justify;
 }
 
@@ -90,17 +101,46 @@ a:hover {
 }
 
 textarea {
-  outline: 1px solid var(--foreground);
+  outline: 0.5px solid var(--foreground);
   padding: 2px;
 }
 
 button {
-  outline: 1px solid var(--foreground);
+  outline: 0.5px solid var(--foreground);
+  margin: 5px;
   padding: 2px;
+  
+}
+
+button:hover {
+  background-color: var(--secondary);
+  color: var(--background);
+}
+
+.collapse-row {
+  margin-top: 1em;
+}
+
+.collapse-row:hover {
+  background-color: var(--secondary);
+  color: var(--background);
+  
 }
 
 input {
-  outline: 1px solid var(--foreground);
+  outline: 0.5px solid var(--foreground);
   margin: 5px;
   padding: 2px;
+}
+
+.project-editor {
+  margin-top: 1em;
+  outline: 1px solid var(--secondary);
+  padding: 2px;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: var(--secondary);
 }

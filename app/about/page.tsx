@@ -11,7 +11,7 @@ export default function Home() {
   const [error, setError] = useState(false);
 
   const workerURL = new URL(
-    "https://portfolio-worker-biancatrihenea.tomaszkkmaher.workers.dev/?page=about"
+    "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/?page=about"
   );
 
   useEffect(() => {

@@ -24,7 +24,7 @@ export default function ProjectEditor({
     );
 
     const portfolioURL = new URL(
-        "https://portfolio-worker-biancatrihenea.tomaszkkmaher.workers.dev/"
+        "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/"
     );
 
     async function uploadImages() {

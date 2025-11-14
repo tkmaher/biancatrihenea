@@ -17,10 +17,10 @@ export default function EditPage() {
     const [error, setError] = useState(false);
 
     const portfolioURL = new URL(
-        "https://portfolio-worker-biancatrihenea.tomaszkkmaher.workers.dev/"
+        "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/"
     );
     const aboutURL = new URL(
-        "https://portfolio-worker-biancatrihenea.tomaszkkmaher.workers.dev/?page=about"
+        "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/?page=about"
     );
 
     useEffect(() => {

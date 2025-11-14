@@ -43,7 +43,7 @@ export default function PortfolioDisplay() {
   const [error, setError] = useState(false);
 
   const workerURL = new URL(
-    "https://portfolio-worker-biancatrihenea.tomaszkkmaher.workers.dev/"
+    "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/"
   );
 
   useEffect(() => {

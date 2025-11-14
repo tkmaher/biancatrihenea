@@ -1,3 +1,6 @@
+
+const bcrypt = require('bcryptjs');
+
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
@@ -209,6 +212,51 @@ async function postProject(request, env) {
   }
 }
 
+async function handleDelete(toDelete) {
+  try {
+    const db = env.DB;
+    const stmt = db.prepare("DELETE FROM biancatrihenea WHERE pid == (?)");
+
+    const folderPath = "biancatrihenea/" + toDelete + "/";
+    console.log(folderPath);
+    const { objects } = await env.PORTFOLIO_STORAGE.list({ prefix: folderPath });
+    for (const obj of objects) {
+      await env.PORTFOLIO_STORAGE.delete(obj.key);
+    }
+
+    await stmt.bind(toDelete).run();
+    return new Response("Successfully deleted item.", {
+      status: 200,
+      headers: { ...corsHeaders },
+    });
+  } catch (error) {
+    return new Response('Error: ' + error.message, { status: 500 });
+  }
+}
+
+async function hashPassword(password) {
+  const salt = "$2b$10$aPWQBpdJECQfzeujfxGgmu";
+  const hashedPassword = await bcrypt.hash(password, salt);
+  return hashedPassword;
+}
+
+async function checkLogin(passwordIn) {
+  const hashedPassword = "$2b$10$aPWQBpdJECQfzeujfxGgmuePTQ3G4.TH7bPvy0W2ymcJ4qrRj4Uti";
+  if (passwordIn == null) {
+    return false;
+  }
+  try {
+    const hashedIn = await hashPassword(passwordIn);
+    console.log("Hashed password in:", hashedIn);
+    console.log("Hashed password correct:", hashedPassword);
+    return hashedIn == hashedPassword;
+  } catch (error) {
+    console.error("Failed to hash password in main:", error);
+    return false;
+  }
+  
+}
+
 // ✅ Handle OPTIONS (CORS preflight)
 function handleOptions(request) {
   if (
@@ -226,30 +274,20 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const page = url.searchParams.get('page');
+    const passwordIn = url.searchParams.get('password');
     const method = request.method;
 
     if (method === "OPTIONS") {
       const toDelete = parseInt(url.searchParams.get('delete'));
+      console.log("checking: ", passwordIn);
+      if (await checkLogin(passwordIn) == false) {
+        return new Response("Invalid credentials.", {
+          status: 401,
+          headers: { ...corsHeaders },
+        });
+      }
       if (toDelete != null) {
-        try {
-          const db = env.DB;
-          const stmt = db.prepare("DELETE FROM biancatrihenea WHERE pid == (?)");
-
-          const folderPath = "biancatrihenea/" + toDelete + "/";
-          console.log(folderPath);
-          const { objects } = await env.PORTFOLIO_STORAGE.list({ prefix: folderPath });
-          for (const obj of objects) {
-            await env.PORTFOLIO_STORAGE.delete(obj.key);
-          }
-
-          await stmt.bind(toDelete).run();
-          return new Response("Successfully deleted item.", {
-            status: 200,
-            headers: { ...corsHeaders },
-          });
-        } catch (error) {
-          return new Response('Error: ' + error.message, { status: 500 });
-        }
+        handleDelete(toDelete);
       }
       return handleOptions(request);
     }
@@ -261,12 +299,23 @@ export default {
         return getItems(request, env);
       }
     } else if (method === "POST") {
+      console.log("checking: ", passwordIn);
+      if (await checkLogin(passwordIn) == false) {
+        return new Response("Invalid credentials.", {
+          status: 401,
+          headers: { ...corsHeaders },
+        });
+      }
       if (page == "about") {
         return postAbout(request, env);
+      } else if (page == "login") {
+        return new Response("Login successful.", {
+          status: 200,
+          headers: { ...corsHeaders },
+        });
       } else {
         return postProject(request, env);
       }
-    } else if (method === "DELETE") {
     } else {
       return new Response(`Unsupported method: ${method}`, {
         status: 405,

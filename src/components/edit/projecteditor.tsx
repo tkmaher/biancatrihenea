@@ -13,6 +13,8 @@ export default function ProjectEditor({
       dimensions: string;
     };
   }) {
+    const [updating, setUpdating] = useState(false);
+
     const [isOpen, setIsOpen] = useState(false);
     const [description, setDescription] = useState(info.description);
     const [projectName, setProjectName] = useState(info.projectname);
@@ -60,11 +62,13 @@ export default function ProjectEditor({
                 body: formData,
             });
             if (!response.ok) throw new Error("Bad response");
-            alert("Images for " + projectName + " updated successfully!");
+            alert(projectName + " updated successfully!");
         } catch (err) {
             console.error(err);
             alert("Error updating project images.");
         }
+
+        setUpdating(false);
     }
 
     const handleSubmit = async (e:any) => {
@@ -74,6 +78,12 @@ export default function ProjectEditor({
         if (projectName.trim() === "") {
             alert("Project name cannot be empty.");
             return;
+        }
+
+        if (updating) {
+            return;
+        } else {
+            setUpdating(true);
         }
 
         const projectData = {
@@ -95,7 +105,6 @@ export default function ProjectEditor({
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             console.log("Response data: " + response);
-            alert("Project " + projectName + " updated successfully!");
         } catch (err) {
             console.error("Error updating project section:", err);
             alert("Error updating project section.");
@@ -182,7 +191,7 @@ export default function ProjectEditor({
                 })}
                 <input type="file" accept="image/*" onChange={handleFileChange} multiple />
             </div>)}
-            <button type="submit">Save changes</button>
+            <button type="submit">{updating ? "Updating..." : "Save changes"}</button>
         </form>
     );
 }

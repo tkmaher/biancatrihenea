@@ -229,6 +229,28 @@ export default {
     const method = request.method;
 
     if (method === "OPTIONS") {
+      const toDelete = parseInt(url.searchParams.get('delete'));
+      if (toDelete != null) {
+        try {
+          const db = env.DB;
+          const stmt = db.prepare("DELETE FROM biancatrihenea WHERE pid == (?)");
+
+          const folderPath = "biancatrihenea/" + toDelete + "/";
+          console.log(folderPath);
+          const { objects } = await env.PORTFOLIO_STORAGE.list({ prefix: folderPath });
+          for (const obj of objects) {
+            await env.PORTFOLIO_STORAGE.delete(obj.key);
+          }
+
+          await stmt.bind(toDelete).run();
+          return new Response("Successfully deleted item.", {
+            status: 200,
+            headers: { ...corsHeaders },
+          });
+        } catch (error) {
+          return new Response('Error: ' + error.message, { status: 500 });
+        }
+      }
       return handleOptions(request);
     }
 
@@ -244,6 +266,7 @@ export default {
       } else {
         return postProject(request, env);
       }
+    } else if (method === "DELETE") {
     } else {
       return new Response(`Unsupported method: ${method}`, {
         status: 405,

@@ -19,6 +19,9 @@ export default function EditPage() {
     const portfolioURL = new URL(
         "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/"
     );
+    const deleteURL = new URL(
+        "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/?delete="
+    );
     const aboutURL = new URL(
         "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/?page=about"
     );
@@ -83,6 +86,21 @@ export default function EditPage() {
         }
     }
 
+    async function handleDelete(index: number) {
+        try {
+            let response = await fetch(deleteURL + `${index}`, {
+                method: "OPTIONS",
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            console.log("Response data: " + response);
+            alert("Project deleted successfully!");
+        } catch (err) {
+            console.error("Error deleting project:", err);
+        }
+    }
+
     const addUrl = (e : MouseEvent, text: string, url: string) => {
         e.preventDefault();
         
@@ -126,7 +144,7 @@ export default function EditPage() {
         )
     }
 
-    function updateProjects(adding: boolean, index?: number) {
+    const updateProjects = (adding: boolean, index?: number) => {
         if (adding) {
             const newProject = {
                 pid: projects.length > 0 ? projects[projects.length - 1].pid + 1 : 0,
@@ -138,8 +156,10 @@ export default function EditPage() {
             };
             setProjects(prevProjects => [...prevProjects, newProject]);
         } else {
-            if (confirm('Remove project?')) {
-                setProjects(prevProjects => prevProjects.filter((_, i) => i !== index));
+            console.log(projects, index);
+            if (confirm('Remove project?') && index != null) {
+                setProjects(prevProjects => prevProjects.filter((_, i) => projects[i]["pid"] !== index));
+                handleDelete(index);
             }
         }
     }
@@ -169,10 +189,10 @@ export default function EditPage() {
                     <br/>
                     <br/>
                     <h2>Edit projects</h2>
-                    {projects.map((project, index) => {
-                        return <div key={index}>
+                    {projects.map((project) => {
+                        return <div key={project["pid"]}>
                             <ProjectEditor info={project}/>
-                            <button type="button" onClick={() => updateProjects(false, index)}>Remove project</button>
+                            <button type="button" onClick={() => updateProjects(false, project["pid"])}>Remove project</button>
                         </div>
                     })}
                     <br/>

@@ -1,15 +1,59 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useEffectEvent } from "react";
 import ReactMarkdown from 'react-markdown';
+import ImageViewer from "../imageviewer";
 
 function ImageSpread({ imageURLs }: { imageURLs: string[] }) {
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [viewerindex, setViewerIndex] = useState(0);
+
+  const numPics = imageURLs.length;
+
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      
+      if (event.key === "Escape") {
+        setViewerOpen(false);
+      } else if (event.key === "ArrowRight") {
+        forwardScroll();
+      } else if (event.key === "ArrowLeft") {
+        backwardScroll();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  const forwardScroll = useEffectEvent(() => {
+    console.log(viewerindex);
+    setViewerIndex((viewerindex + 1) % numPics);
+    console.log("right");
+  });
+
+  const backwardScroll = useEffectEvent(() => {
+    setViewerIndex(((viewerindex - 1 + numPics) % numPics));
+    console.log("left");
+  });
+
   return (
     <div className="image-row-container">
       {imageURLs.map((image, index) => (
-        <div key={index} className="image-item">
+        <a key={index} className="image-item" onClick={() => {setViewerIndex(index); setViewerOpen(true)}}>
           <img src={image} alt={`Image ${index + 1}`} />
-        </div>
+        </a>
       ))}
+      {viewerOpen && 
+        <>
+          <button className="img-closer" onClick={() => setViewerOpen(false)}>X</button>
+          <button className="img-scroller" style={{right: "10px"}} onClick={forwardScroll}>&gt;</button>
+          <button className="img-scroller" style={{left: "10px"}} onClick={backwardScroll}>&lt;</button>
+          <ImageViewer imageSrcs={imageURLs} initialIndex={viewerindex}/>
+        </>
+      }
     </div>
   );
 }

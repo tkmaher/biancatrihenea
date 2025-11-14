@@ -57,7 +57,7 @@ export default function ProjectEditor({
         console.log("order: ", orderedList);
     
         try {
-            const response = await fetch(portfolioURL, {
+            const response = await fetch(portfolioURL + "?password=" + localStorage.getItem("adminPassword"), {
                 method: 'POST',
                 body: formData,
             });
@@ -94,7 +94,7 @@ export default function ProjectEditor({
             dimensions: dimensions
         };
         try {
-            let response = await fetch(portfolioURL, {
+            let response = await fetch(portfolioURL + "?password=" + localStorage.getItem("adminPassword"), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -175,7 +175,7 @@ export default function ProjectEditor({
             </div>
             {isOpen && (<div className="project-editor">
                 <div>Name</div>
-                <input type="text" name="name" value={projectName} onChange={(e) => setProjectName(e.target.value)}/>
+                <input type="text" name="name" value={projectName} onChange={(e) => setProjectName(e.target.value)} required/>
                 <div>Date</div>
                 <input type="text" name="date" value={date} onChange={(e) => {setDate(e.target.value)}}/>
                 <div>Description</div>

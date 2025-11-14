@@ -42,6 +42,7 @@ export default function Home() {
         <Link href={props.linkInfo.link} target="_blank" rel="noopener noreferrer">
           {props.linkInfo.text}
         </Link>
+        <br/>
       </>
     )
   }

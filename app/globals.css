@@ -87,6 +87,12 @@ a:hover {
   margin-top: 2em;
 }
 
+@media only screen and (hover: none) and (pointer: coarse){
+  .image-row-container {
+    height: 20em; 
+  }
+}
+
 .image-item {
   flex-shrink: 0; 
   margin-right: 0.5em; 
@@ -143,4 +149,50 @@ hr {
   border: none;
   height: 1px;
   background-color: var(--secondary);
+}
+
+.img-closer {
+  position: fixed;
+  top: 10px;
+  width: 50px;
+  height: 50px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  z-index: 1002;
+  text-align: center;
+}
+
+
+.img-scroller {
+  position: fixed;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 30px;
+  cursor: pointer;
+  z-index: 1002;
+  text-align: center;
+  transform: translate(0, -50%);
+}
+
+.img-overlay {
+  margin: 0;
+  position: fixed;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 1001;
+}
+
+.overlay-image {
+  position: fixed;
+  opacity: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 80vh;
 }

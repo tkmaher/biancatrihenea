@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { MouseEvent } from 'react';
 import Menu from "@/src/components/menu";
 import ProjectEditor from "@/src/components/edit/projecteditor";
+import { Navigate } from "react-router-dom";
 
 export default function EditPage() {
     //structure:
@@ -16,6 +17,9 @@ export default function EditPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
+    const [password, setPassword] = useState("");   
+    const [loggedIn, setLoggedIn] = useState(false);   
+
     const portfolioURL = new URL(
         "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/"
     );
@@ -24,6 +28,9 @@ export default function EditPage() {
     );
     const aboutURL = new URL(
         "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/?page=about"
+    );
+    const loginURL = new URL(
+        "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/?page=login"
     );
 
     useEffect(() => {
@@ -68,7 +75,7 @@ export default function EditPage() {
             links: links.map(link => ({text: link[0], link: link[1]}))
         };
         try {
-            let response = await fetch(aboutURL, {
+            let response = await fetch(aboutURL + "&password=" + localStorage.getItem("adminPassword"), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -88,7 +95,7 @@ export default function EditPage() {
 
     async function handleDelete(index: number) {
         try {
-            let response = await fetch(deleteURL + `${index}`, {
+            let response = await fetch(deleteURL + `${index}` + "&password=" + localStorage.getItem("adminPassword"), {
                 method: "OPTIONS",
             });
             if (!response.ok) {
@@ -164,18 +171,46 @@ export default function EditPage() {
         }
     }
 
+    const login = async (e: any) => {
+        e.preventDefault();
+        try {
+            const newUrl = loginURL + "&password=" + password;
+            console.log("Logging in with URL:", newUrl);
+            let response = await fetch(newUrl, {
+                method: "POST",
+            });
+            if (!response.ok) {
+                alert("Login failed. Please check your password.");
+                setLoggedIn(false);
+                localStorage.removeItem("adminPassword");
+            } else {
+                localStorage.setItem("adminPassword", password);
+                setPassword("");
+                alert("Login successful.");
+                setLoggedIn(true);
+            }
+            
+        } catch (err) {
+            console.error("Error during login:", err);
+        }
+    };
+
     return (
         <div className="text-spread-container">
             <Menu/>
             <h1 style={{fontSize: "3em"}}>Settings</h1>
-            {loading ? (
+            <form onSubmit={login}>
+                <input type="text" name="password" placeholder="Password (for editing)" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <button type="submit">Login</button>
+            </form>
+            {(loading) ? (
                 error ? (
                 <div>Error fetching portfolio!</div>
                 ) : (
                 <div>Loading...</div>
                 )
             ) : (
-                <>
+                (loggedIn) && <>
                     <form onSubmit={handleSubmit}>
                         <h2>Edit information</h2>
                         <textarea placeholder="(Supports Markdown)" style={{width: "100%", height: "200px"}} value={about} onChange={(e) => {setAbout(e.target.value)}}></textarea>
@@ -198,6 +233,7 @@ export default function EditPage() {
                     <br/>
                     <button type="button" onClick={() => updateProjects(true)}>Add new project...</button>   
                 </>
+                
             )}
         </div>
     )

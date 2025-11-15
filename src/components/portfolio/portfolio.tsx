@@ -93,6 +93,8 @@ export default function PortfolioDisplay() {
     "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/"
   );
 
+  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -191,14 +193,16 @@ export default function PortfolioDisplay() {
             {menuOpen ? (
               <Menu />
             ) : (
-              <MenuItem
+              (numProjects > 0) && (<MenuItem
                 pid={currentProject}
                 title={projects[currentProject].projectname}
                 date={projects[currentProject].date}
-              />
+              />)
             )}
           </div>
-          <PortfolioSpread info={projects[currentProject]} />
+          { numProjects > 0 ? <PortfolioSpread info={projects[currentProject]} /> : 
+            <div className="text-spread-container"><br/>(No projects available.)<br/><br/></div> 
+          }
         </>
       )}
     </>

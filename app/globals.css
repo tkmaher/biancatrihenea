@@ -23,6 +23,7 @@ body {
   margin-bottom: 3em;
 }
 
+
 h2 {
   background-color: var(--secondary);
   color: var(--background);
@@ -94,7 +95,6 @@ a:hover {
 }
 
 .image-item {
-  flex-shrink: 0; 
   margin-right: 0.5em; 
 }
 
@@ -115,7 +115,12 @@ button {
   outline: 0.5px solid var(--foreground);
   margin: 5px;
   padding: 2px;
+  cursor: pointer;
   
+}
+
+a {
+  cursor: pointer;
 }
 
 button:hover {
@@ -159,7 +164,7 @@ hr {
   font-size: 30px;
   color: white;
   cursor: pointer;
-  z-index: 1002;
+  z-index: 9999;
   text-align: center;
 }
 
@@ -171,7 +176,7 @@ hr {
   height: 50px;
   font-size: 30px;
   cursor: pointer;
-  z-index: 1002;
+  z-index: 9999;
   text-align: center;
   transform: translate(0, -50%);
 }
@@ -185,7 +190,7 @@ hr {
   top: 0;
   left: 0;
   overflow: hidden;
-  z-index: 1001;
+  z-index: 9998;
 }
 
 .overlay-image {

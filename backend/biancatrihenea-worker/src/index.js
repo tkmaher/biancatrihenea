@@ -155,7 +155,7 @@ async function postProject(request, env) {
       const filepath = item["value"];
       const index = String(i).padStart(4, "0");
       if (item["type"] == "new") {
-        const newKey = folder + index + "a";
+        const newKey = folder + index + ".jpegA";
         const file = formData.get(item["fname"]);
         await env.PORTFOLIO_STORAGE.put(newKey, file.stream(), {
           httpMetadata: { contentType: file.type },
@@ -173,9 +173,9 @@ async function postProject(request, env) {
       const filepath = item["value"];
       const index = String(i).padStart(4, "0");
 
-      const newKey = folder + index + "a";
+      const newKey = folder + index + ".jpegA";
       const oldName = filepath.split('/').pop();
-      const oldKey = `${folder}${oldName}`;
+      const oldKey = `${folder}${oldName}.jpeg`;
       console.log("oldname:", oldName, "index:", index);
       if (oldName != index) {
         console.log(oldKey, newKey);

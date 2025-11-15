@@ -198,7 +198,7 @@ export default function EditPage() {
     return (
         <div className="text-spread-container">
             <Menu/>
-            <h1 style={{fontSize: "3em"}}>Settings</h1>
+            <h1 className="header">Settings</h1>
             <form onSubmit={login}>
                 <input type="text" name="password" placeholder="Password (for editing)" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="submit">Login</button>
@@ -207,7 +207,7 @@ export default function EditPage() {
                 error ? (
                 <div>Error fetching portfolio!</div>
                 ) : (
-                <div>Loading...</div>
+                (loggedIn) && <div>Loading...</div>
                 )
             ) : (
                 (loggedIn) && <>

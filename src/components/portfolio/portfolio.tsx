@@ -74,9 +74,11 @@ function PortfolioSpread({
     <div className="spread-container">
       <ImageSpread imageURLs={info.imageURLs} />
       <div className="text-spread-container">
-        
-        <ReactMarkdown>{info.description}</ReactMarkdown>
+        <div className="header">{info.projectname}</div>
+        <div>{info.date}</div>
         <em>{info.dimensions}</em>
+        <br/><br/>
+        <ReactMarkdown>{info.description}</ReactMarkdown>
       </div>
     </div>
   );
@@ -190,14 +192,8 @@ export default function PortfolioDisplay() {
         <>
           <div className="text-spread-container">
             <NavBar />
-            {menuOpen ? (
+            {menuOpen && (
               <Menu />
-            ) : (
-              (numProjects > 0) && (<MenuItem
-                pid={currentProject}
-                title={projects[currentProject].projectname}
-                date={projects[currentProject].date}
-              />)
             )}
           </div>
           { numProjects > 0 ? <PortfolioSpread info={projects[currentProject]} /> : 

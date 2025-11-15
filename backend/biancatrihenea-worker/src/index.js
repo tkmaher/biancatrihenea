@@ -8,9 +8,9 @@ const testURL = "https://pub-7d691ed4c6f245279280ca86bc185523.r2.dev"; // real l
 
 // ✅ Add proper CORS headers
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*", // You can replace * with your frontend domain if needed
+  "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Allow-Headers": "*",
 };
 
 async function getItems(request, env) {
@@ -81,6 +81,7 @@ async function postAbout(request, env) {
     const db = env.DB;
     try {
       const jsonIn = await request.json();
+      console.log("Received JSON:", jsonIn);
       const aboutRez = await db.prepare('UPDATE biancatrihenea_about SET about = (?) WHERE rowid = 1').bind(jsonIn["about"]);
       await aboutRez.all();
       await db.exec('DELETE FROM biancatrihenea_links');
@@ -212,10 +213,13 @@ async function postProject(request, env) {
   }
 }
 
-async function handleDelete(toDelete) {
+async function handleDelete(request, env, toDelete) {
   try {
+    console.log("in delete function");
     const db = env.DB;
-    const stmt = db.prepare("DELETE FROM biancatrihenea WHERE pid == (?)");
+    const result = await db.prepare("DELETE FROM biancatrihenea WHERE pid = (?)").bind(toDelete).run();
+
+    console.log("result:", result);
 
     const folderPath = "biancatrihenea/" + toDelete + "/";
     console.log(folderPath);
@@ -224,7 +228,6 @@ async function handleDelete(toDelete) {
       await env.PORTFOLIO_STORAGE.delete(obj.key);
     }
 
-    await stmt.bind(toDelete).run();
     return new Response("Successfully deleted item.", {
       status: 200,
       headers: { ...corsHeaders },
@@ -257,18 +260,6 @@ async function checkLogin(passwordIn) {
   
 }
 
-// ✅ Handle OPTIONS (CORS preflight)
-function handleOptions(request) {
-  if (
-    request.headers.get("Origin") !== null &&
-    request.headers.get("Access-Control-Request-Method") !== null &&
-    request.headers.get("Access-Control-Request-Headers") !== null
-  ) {
-    return new Response(null, { headers: corsHeaders });
-  } else {
-    return new Response(null, { headers: { "Allow": "GET, POST, OPTIONS" } });
-  }
-}
 
 export default {
   async fetch(request, env) {
@@ -278,18 +269,12 @@ export default {
     const method = request.method;
 
     if (method === "OPTIONS") {
-      const toDelete = parseInt(url.searchParams.get('delete'));
-      console.log("checking: ", passwordIn);
-      if (await checkLogin(passwordIn) == false) {
-        return new Response("Invalid credentials.", {
-          status: 401,
-          headers: { ...corsHeaders },
-        });
-      }
-      if (toDelete != null) {
-        handleDelete(toDelete);
-      }
-      return handleOptions(request);
+      return new Response(null, {
+        status: 204,
+        headers: {
+          ...corsHeaders,
+        }
+      });
     }
 
     if (method === "GET") {
@@ -306,6 +291,13 @@ export default {
           headers: { ...corsHeaders },
         });
       }
+
+      if (url.searchParams.has('delete')) {
+        const toDelete = parseInt(url.searchParams.get('delete'));
+        console.log("deleting:", url);
+        return handleDelete(request, env, toDelete);
+      }
+
       if (page == "about") {
         return postAbout(request, env);
       } else if (page == "login") {

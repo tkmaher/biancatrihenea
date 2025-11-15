@@ -96,7 +96,7 @@ export default function EditPage() {
     async function handleDelete(index: number) {
         try {
             let response = await fetch(deleteURL + `${index}` + "&password=" + localStorage.getItem("adminPassword"), {
-                method: "OPTIONS",
+                method: "POST",
             });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

@@ -40,13 +40,8 @@ function ImageSpread({ imageURLs }: { imageURLs: string[] }) {
   });
 
   return (
-    <div className="image-row-container">
-      {imageURLs.map((image, index) => (
-        <a key={index} className="image-item" onClick={() => {setViewerIndex(index); setViewerOpen(true)}}>
-          <img src={image} alt={`Image ${index + 1}`} />
-        </a>
-      ))}
-      {viewerOpen && 
+    <div>
+    {viewerOpen && 
         <>
           <button className="img-closer" onClick={() => setViewerOpen(false)}>X</button>
           <button className="img-scroller" style={{right: "10px"}} onClick={forwardScroll}>&gt;</button>
@@ -54,6 +49,12 @@ function ImageSpread({ imageURLs }: { imageURLs: string[] }) {
           <ImageViewer imageSrcs={imageURLs} initialIndex={viewerindex}/>
         </>
       }
+      <div className="image-row-container">
+        {imageURLs.map((image, index) => (
+            <img className="image-row-container-img" onClick={() => {setViewerIndex(index); setViewerOpen(true)}} key={index} src={image} alt={`Image ${index + 1}`} />
+        ))}
+        
+      </div>
     </div>
   );
 }

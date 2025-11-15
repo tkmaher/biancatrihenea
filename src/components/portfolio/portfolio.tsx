@@ -66,6 +66,7 @@ function PortfolioSpread({
     projectname: string;
     imageURLs: string[];
     description: string;
+    dimensions: string;
     date: string;
   };
 }) {
@@ -73,7 +74,9 @@ function PortfolioSpread({
     <div className="spread-container">
       <ImageSpread imageURLs={info.imageURLs} />
       <div className="text-spread-container">
-      <ReactMarkdown>{info.description}</ReactMarkdown>
+        
+        <ReactMarkdown>{info.description}</ReactMarkdown>
+        <em>{info.dimensions}</em>
       </div>
     </div>
   );

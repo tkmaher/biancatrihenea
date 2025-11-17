@@ -2,7 +2,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 
 const DrawingCanvas = () => {
-  const canvasRef = useRef(null);
+const canvasRef = useRef<HTMLCanvasElement>(null);
   const [beginDrawing, setBeginDrawing] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
   const [lastPos, setLastPos] = useState({ x: 0, y: 0 });
@@ -12,7 +12,9 @@ const DrawingCanvas = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (canvas == null) return;
     const ctx = canvas.getContext('2d');
+    if (ctx == null) return;
     // Initialize canvas properties like line width, color etc.
     ctx.lineWidth = 1;
     ctx.strokeStyle = 'white';
@@ -35,18 +37,20 @@ const DrawingCanvas = () => {
       }
   }, []);
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: any) => {
     setBeginDrawing(true);
     setLastPos({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: any) => {
     if (beginDrawing) {
         setIsDrawing(true);
     }
     if (!isDrawing) return;
     const canvas = canvasRef.current;
+    if (canvas == null) return;
     const ctx = canvas.getContext('2d');
+    if (ctx == null) return;
     ctx.beginPath();
     ctx.moveTo(lastPos.x, lastPos.y);
     ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);

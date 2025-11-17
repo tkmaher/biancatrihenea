@@ -70,14 +70,18 @@ a:hover {
 .spread-container {
   width: 100%;
   margin-bottom: 3em;
+  pointer-events: none;
+  div {
+    pointer-events: auto;
+  }
 }
 
 .text-spread-container {
   margin: 0 auto;
   width: 600px; 
   max-width: 100%;
-  text-align: left; 
   text-align: justify;
+  
 }
 
 .image-row-container {
@@ -208,4 +212,13 @@ hr {
   height: auto;
   max-height: 80vh;
   z-index: 9999;
+}
+
+.canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9000;
+  margin: 0 auto;
+
 }

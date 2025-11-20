@@ -4,6 +4,7 @@ import { MouseEvent } from 'react';
 import Menu from "@/src/components/menu";
 import ProjectEditor from "@/src/components/edit/projecteditor";
 import { Navigate } from "react-router-dom";
+import { fadeIn } from "@/src/components/transitions";
 
 export default function EditPage() {
     //structure:
@@ -14,7 +15,6 @@ export default function EditPage() {
     const [links, setLinks] = useState<any[]>([]);
     const [projects, setProjects] = useState<any[]>([]);
     const [about, setAbout] = useState("");
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
     const [password, setPassword] = useState("");   
@@ -59,7 +59,7 @@ export default function EditPage() {
             console.error("Error fetching data:", err);
             setError(true);
         } finally {
-            if (!error) setLoading(false);
+            if (!error) fadeIn("content-area", 50);
         }
         };
 
@@ -197,18 +197,13 @@ export default function EditPage() {
 
     return (
         <div className="text-spread-container">
-            <Menu/>
             <h1 className="header">Settings</h1>
             <form onSubmit={login}>
                 <input type="text" name="password" placeholder="Password (for editing)" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="submit">Login</button>
             </form>
-            {(loading) ? (
-                error ? (
+            {(error) ? (
                 <div>Error fetching portfolio!</div>
-                ) : (
-                (loggedIn) && <div>Loading...</div>
-                )
             ) : (
                 (loggedIn) && <>
                     <form onSubmit={handleSubmit}>

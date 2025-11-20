@@ -4,33 +4,31 @@ import { usePathname } from 'next/navigation';
 
 export default function Menu() {
     const menuItems = [
-        {"href": "/portfolio", "text": "Portfolio", "class": "left"},
-        {"href": "/about", "text": "About", "class": "center"},
-        {"href": "/contact", "text": "Contact", "class": "right"},
+        {"href": "/portfolio", "text": "Portfolio"},
+        {"href": "/about", "text": "About"},
+        {"href": "/contact", "text": "Contact"},
     ];
     const pathName = usePathname();
     
-    function MenuItem(props: { href: string; text: string; class: string }) {
+    function MenuItem(props: { href: string; text: string }) {
         return (
-            <>
-                <span className={props.class} style={{textDecoration: pathName == props.href ? "underline" : "none"}}>
-                    <Link href={props.href}>{props.text}</Link>
-                </span>
-            </>
+            <div style={{color: pathName == props.href ? "white" : "auto"}} >
+                <Link href={props.href}
+                id={pathName == props.href ? "node2" : ""}>{props.text}</Link>
+            </div>
         );
     }
 
     return (
-        <div className="text-spread-container">
             
-            <div className="menu-stretch">
-                {menuItems.map((item) => {
-                    return <MenuItem key={item["text"]}
-                                    href={item["href"]} 
-                                    text={item["text"]}
-                                    class={item["class"]}/>;
-                })}
-            </div>
+        <div className="menu-column">
+            
+            {menuItems.map((item) => {
+                return <MenuItem key={item["text"]}
+                                href={item["href"]} 
+                                text={item["text"]}/>;
+            })}
         </div>
     );
 }
+//<Link style={{float: "right"}} href="https://www.timeanddate.com/worldclock/" target="_blank" >{new Date().getFullYear()}</Link>

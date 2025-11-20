@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import "./globals.css";
-import DrawingCanvas from "@/src/components/canvas";
+import Main from "@/src/components/main";
+
 
 export const metadata: Metadata = {
   title: "Bianca Trihenea",
   description: "The website of Bianca Trihenea.",
 };
+
 
 export default function RootLayout({
   children,
@@ -16,17 +17,13 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body style={{position: "relative"}}>
-
-        <div className="text-spread-container">
-          <div className="menu-stretch">
-            <Link href="/" style={{width: "100%"}}>Bianca Trihenea</Link>
-            <Link href="https://www.timeanddate.com/worldclock/" target="_blank" className="right">{new Date().getFullYear()}</Link>
-          </div>
-        </div >
-        {children}
-        <DrawingCanvas />
-      </body>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <Main children={children} />
     </html>
   );
 }

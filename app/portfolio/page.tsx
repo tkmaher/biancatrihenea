@@ -8,7 +8,6 @@ export default function Portfolio() {
   return (
     <>
       <PortfolioDisplay/>
-      <Menu/>
     </>
   );
 }

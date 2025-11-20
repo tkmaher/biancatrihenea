@@ -23,8 +23,9 @@ async function getItems(request, env) {
       console.log(folderPath);
       const { objects } = await env.PORTFOLIO_STORAGE.list({ prefix: folderPath });
 
-      const imageUrls = objects
-        .map(obj => `${testURL}/${obj.key}`);
+      const imageUrls = objects.map(obj =>
+        `${testURL}/${obj.key}?t=${obj.uploaded || Date.now()}`
+      );
 
       results[i].imageURLs = imageUrls;
     }

@@ -1,13 +1,11 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
+
 import { useState, useEffect } from "react";
 import ReactMarkdown from 'react-markdown';
-import Menu from "../../src/components/menu";
+import { fadeIn } from "@/src/components/transitions";
 
 export default function Home() {
   const [about, setAbout] = useState("");
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const workerURL = new URL(
@@ -29,7 +27,7 @@ export default function Home() {
         console.error("Error fetching data:", err);
         setError(true);
       } finally {
-        if (!error) setLoading(false);
+        if (!error) fadeIn("content-area");
       }
     };
 
@@ -38,21 +36,14 @@ export default function Home() {
 
   return (
     <>
-      <Menu/>
-      <div className="text-spread-container">
-        {loading ? (
-          error ? (
-            <div>Error fetching portfolio!</div>
-          ) : (
-            <div>Loading...</div>
-          )
-        ) : (
-          <div className="info">
-            <ReactMarkdown>{about}</ReactMarkdown>
-            
-          </div>
-        )}
-      </div>
+      {error ? (
+        <div>Error fetching portfolio!</div>
+      ) : (
+        <div className="info">
+          <ReactMarkdown>{about}</ReactMarkdown>
+          
+        </div>
+      )}
     </>
   );
 }

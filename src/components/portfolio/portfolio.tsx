@@ -2,6 +2,8 @@
 import { useState, useEffect, useEffectEvent } from "react";
 import ReactMarkdown from 'react-markdown';
 import ImageViewer from "../imageviewer";
+import { useRouter, useSearchParams } from 'next/navigation'; 
+import { fadeIn, fadeOut } from "@/src/components/transitions";
 
 function ImageSpread({ imageURLs }: { imageURLs: string[] }) {
   const [viewerOpen, setViewerOpen] = useState(false);
@@ -71,10 +73,11 @@ function PortfolioSpread({
     date: string;
   };
 }) {
+  
   return (
-    <div className="spread-container">
+    <div>
       <ImageSpread imageURLs={info.imageURLs} />
-      <div className="text-spread-container">
+      <div className="text-body">
         <div className="header">{info.projectname}</div>
         <div>{info.date}</div>
         <em>{info.dimensions}</em>
@@ -86,17 +89,17 @@ function PortfolioSpread({
 }
 
 export default function PortfolioDisplay() {
-  const [currentProject, setCurrentProject] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const [currentProject, setCurrentProject] = useState(searchParams.get("index") ? parseInt(searchParams.get("index") || "0") : 0);
+
   const [projects, setProjects] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const workerURL = new URL(
     "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/"
   );
 
-  
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,16 +112,27 @@ export default function PortfolioDisplay() {
         const jsonData = await response.json();
         console.log("Fetched data:", jsonData);
         setProjects(jsonData);
+        if (jsonData.length > 0 && (currentProject < 0 || currentProject >= jsonData.length)) {
+          setCurrentProject(0);
+          router.replace('/portfolio?index=0', undefined);
+        }
       } catch (err) {
         console.error("Error fetching data:", err);
         setError(true);
       } finally {
-        if (!error) setLoading(false);
+        
+        if (!error) fadeIn("content-area", 50);
       }
     };
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fadeOut("portfolio-column");
+    fadeIn("portfolio-column", 500);
+
+  }, [currentProject]);
 
   const numProjects = projects.length;
 
@@ -126,53 +140,62 @@ export default function PortfolioDisplay() {
     title,
     date,
     pid,
+    index
   }: {
     title: string;
     date: string;
     pid: number;
+    index: number; // pid and index are different; pid = row in database while index = row in menu
   }) => (
     <div
       className="menu-item-portfolio"
-      onClick={() => setCurrentProject(pid)}
+      
       style={{
-        fontWeight: currentProject === pid ? "bold" : "normal",
+        color: currentProject === index ? "white" : "auto",
       }}
+      id={
+        currentProject === index ? "node3" : ""
+      }
     >
-      <span style={{ float: "left" }}>{title}</span>
-      <span style={{ float: "right" }}>{date}</span>
-      <div style={{ clear: "both" }}></div>
+      <a onClick={() => {
+        setCurrentProject(index);
+        router.push('/portfolio?index=' + index, undefined);
+      }}>
+        {title}
+      </a>
     </div>
   );
 
-  const Menu = () => (
-    <div className="text-spread-container">
+  const ProjectMenu = () => (
+    <div>
       {projects.map((project, index) => (
         <MenuItem
-          key={project.pid}
+          key={index}
           title={project.projectname}
           date={project.date}
           pid={project.pid}
+          index={index}
         />
       ))}
     </div>
   );
 
   const NavBar = () => {
-    const forward = () =>
-      setCurrentProject((currentProject + 1) % numProjects);
-    const backward = () =>
-      setCurrentProject(
-        ((currentProject - 1 + numProjects) % numProjects)
-      );
-    const toggleMenu = () => setMenuOpen(!menuOpen);
+    const forward = () => {
+      const newProj = (currentProject + 1) % numProjects;
+      setCurrentProject(newProj);
+      router.push('/portfolio?index=' + newProj, undefined);
+    };
+    const backward = () => {
+      const newProj = (currentProject - 1 + numProjects) % numProjects;
+      setCurrentProject(newProj);
+      router.push('/portfolio?index=' + newProj, undefined);
+    };
 
     return (
-      <div className="menu-stretch">
+      <div>
         <a className="left" onClick={backward}>
           Previous
-        </a>
-        <a className="center" onClick={toggleMenu}>
-          Menu
         </a>
         <a className="right" onClick={forward}>
           Next
@@ -183,24 +206,20 @@ export default function PortfolioDisplay() {
 
   return (
     <>
-      {loading ? (
-        error ? (
-          <div>Error fetching portfolio!</div>
-        ) : (
-          <div>Loading...</div>
-        )
+      {error ? (
+        <div>Error fetching portfolio!</div>
       ) : (
-        <>
-          <div className="text-spread-container">
-            <NavBar />
-            {menuOpen && (
-              <Menu />
-            )}
+        <div className="column-flex-container">
+          <div className="portfolio-menu-column">
+            <ProjectMenu />
           </div>
-          { numProjects > 0 ? <PortfolioSpread info={projects[currentProject]} /> : 
-            <div className="text-spread-container"><br/>(No projects available.)<br/><br/></div> 
-          }
-        </>
+          <div id="portfolio-column">
+            { numProjects > 0 ? <PortfolioSpread info={projects[currentProject]} /> : 
+              <div><br/>(No projects available.)<br/><br/></div> 
+            }
+            <NavBar />
+          </div>
+        </div>
       )}
     </>
   );

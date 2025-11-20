@@ -13,6 +13,6 @@ export function fadeIn(id: string, time: number) {
         setTimeout(() => {
         item.style.opacity = "1";
         item.style.transform = "translate(0%, 0%)";
-        }, 100);
+        }, time);
     }
 }

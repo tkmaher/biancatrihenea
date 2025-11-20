@@ -81,7 +81,6 @@ h2 {
   justify-content: center;
   align-items: center;
   top: 50vh;
-  transform: translate(0%, -50%);
 }
 
 .portfolio-menu-column  {
@@ -97,7 +96,6 @@ h2 {
   min-width: 0;
   margin-bottom: 3em;
   pointer-events: none;
-  transform: translate(-100%, 0%);
   opacity: 0;
   transition: transform 300ms ease-in-out;
   overflow-x: none;
@@ -112,6 +110,10 @@ h2 {
   transform: none !important;
 }
 
+.column-flex-container {
+  flex-direction: column;
+}
+
 #portfolio-column > div {
   pointer-events: auto;
 }
@@ -122,6 +124,8 @@ h2 {
   max-width: 100%;
   min-width: 0;
   overflow-wrap: break-word;
+  overflow-x: none;
+
 }
 
 /* --------------------------------------------------
@@ -145,6 +149,34 @@ h2 {
 @media only screen and (hover: none) and (pointer: coarse) {
   .image-row-container {
     height: 20em;
+  }
+
+  .menu-column,
+  .portfolio-menu-column {
+    min-width: 8vw;
+    max-width: 100%;
+    height: auto;
+
+    position: relative;
+
+    top: 0;
+    left: 0;
+    transform: none;
+  }
+
+  h1 {
+    position: relative;
+  }
+
+  #content-area {
+    margin: 0;
+    width: 100%;
+    max-height: 100%;
+
+  }
+
+  .menu-flex-container {
+    flex: column;
   }
 }
 
@@ -218,7 +250,6 @@ a:hover {
   cursor: pointer;
   z-index: 9999;
   text-align: center;
-  transform: translate(0, -50%);
 }
 
 .img-overlay {

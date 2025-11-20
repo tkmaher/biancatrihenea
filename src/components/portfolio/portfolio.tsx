@@ -130,7 +130,7 @@ export default function PortfolioDisplay() {
 
   useEffect(() => {
     fadeOut("portfolio-column");
-    fadeIn("portfolio-column", 500);
+    fadeIn("portfolio-column", 200);
 
   }, [currentProject]);
 

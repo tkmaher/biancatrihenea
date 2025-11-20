@@ -27,7 +27,7 @@ export default function Home() {
         console.error("Error fetching data:", err);
         setError(true);
       } finally {
-        if (!error) fadeIn("content-area");
+        if (!error) fadeIn("content-area", 50);
       }
     };
 

@@ -197,7 +197,7 @@ export default function EditPage() {
 
     return (
         <div className="text-spread-container">
-            <h1 className="header">Settings</h1>
+            <div className="header">Settings</div>
             <form onSubmit={login}>
                 <input type="text" name="password" placeholder="Password (for editing)" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="submit">Login</button>

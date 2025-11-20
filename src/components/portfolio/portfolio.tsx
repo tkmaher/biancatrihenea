@@ -45,16 +45,16 @@ function ImageSpread({ imageURLs }: { imageURLs: string[] }) {
     <div>
     {viewerOpen && 
         <>
-          <button className="img-closer" onClick={() => setViewerOpen(false)}>X</button>
+          <button className="img-closer" style={{left: "10px"}} onClick={() => setViewerOpen(false)}>X</button>
           <button className="img-scroller" style={{right: "10px"}} onClick={forwardScroll}>&gt;</button>
           <button className="img-scroller" style={{left: "10px"}} onClick={backwardScroll}>&lt;</button>
           <ImageViewer imageSrcs={imageURLs} initialIndex={viewerindex}/>
         </>
       }
       <div className="image-row-container">
-        {imageURLs.map((image, index) => (
+        {!viewerOpen && imageURLs.map((image, index) => (
             <img className="image-row-container-img" onClick={() => {setViewerIndex(index); setViewerOpen(true)}} key={index} src={image} alt={`Image ${index + 1}`} />
-        ))}
+        )) }
         
       </div>
     </div>
@@ -194,9 +194,11 @@ export default function PortfolioDisplay() {
 
     return (
       <div>
+        <br/>
         <a className="left" onClick={backward}>
           Previous
         </a>
+        <br/>
         <a className="right" onClick={forward}>
           Next
         </a>
@@ -212,12 +214,13 @@ export default function PortfolioDisplay() {
         <div className="column-flex-container">
           <div className="portfolio-menu-column">
             <ProjectMenu />
+            <NavBar />
           </div>
           <div id="portfolio-column">
             { numProjects > 0 ? <PortfolioSpread info={projects[currentProject]} /> : 
               <div><br/>(No projects available.)<br/><br/></div> 
             }
-            <NavBar />
+            
           </div>
         </div>
       )}

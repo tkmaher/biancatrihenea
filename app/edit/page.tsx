@@ -196,12 +196,12 @@ export default function EditPage() {
     };
 
     return (
-        <div className="text-spread-container">
+        <div  style={{color: "white"}}>
             <div className="header">Settings</div>
-            <form onSubmit={login}>
+            {!loggedIn && <form onSubmit={login}>
                 <input type="text" name="password" placeholder="Password (for editing)" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="submit">Login</button>
-            </form>
+            </form>}
             {(error) ? (
                 <div>Error fetching portfolio!</div>
             ) : (
@@ -216,16 +216,17 @@ export default function EditPage() {
                         <ContactLink info={["", ""]} empty={true}/>
                         <button type="submit">Save changes</button>                     
                     </form>
-                    <br/>
-                    <br/>
+
                     <h2>Edit projects</h2>
                     {projects.map((project) => {
                         return <div key={project["pid"]}>
                             <ProjectEditor info={project}/>
                             <button type="button" onClick={() => updateProjects(false, project["pid"])}>Remove project</button>
+                            <br/><br/>
                         </div>
                     })}
                     <br/>
+                    
                     <button type="button" onClick={() => updateProjects(true)}>Add new project...</button>   
                 </>
                 

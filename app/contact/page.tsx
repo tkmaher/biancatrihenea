@@ -51,7 +51,7 @@ export default function Home() {
       {error ? (
           <div>Error fetching portfolio!</div>
       ) : (
-        <div className="info" style={{textAlign: "center"}}>
+        <div className="info">
           {links.map((link, index) => {
             return <AboutLink key={index} linkInfo={link} />;
           })}

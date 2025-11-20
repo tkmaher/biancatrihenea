@@ -263,3 +263,12 @@ hr {
 }
 
 
+
+.collapse-row {
+  color: var(--secondary);
+  background-color: var(--foreground);
+}
+
+.collapse-row:hover {
+  cursor: pointer;
+}

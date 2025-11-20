@@ -163,6 +163,7 @@ export default function ProjectEditor({
                     e.preventDefault();
                     removeImage(props.index);
                 }}>Remove</button>
+                
             </>
         )
     }
@@ -174,6 +175,7 @@ export default function ProjectEditor({
                 <span style={{float: "right", marginRight: "2px"}}>{isOpen ? "-" : "+"}</span>
             </div>
             {isOpen && (<div className="project-editor">
+                <br/>
                 <div>Name</div>
                 <input type="text" name="name" value={projectName} onChange={(e) => setProjectName(e.target.value)} required/>
                 <div>Date</div>
@@ -189,9 +191,14 @@ export default function ProjectEditor({
                         <ImageRow key={index} url={url["value"]} index={index}/>
                     )
                 })}
+                <br/>
+                <br/>
                 <input type="file" accept="image/*" onChange={handleFileChange} multiple />
+                <br/>
             </div>)}
+            <br/>
             <button type="submit">{updating ? "Updating..." : "Save changes"}</button>
+            
         </form>
     );
 }

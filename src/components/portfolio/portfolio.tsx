@@ -3,7 +3,7 @@ import { useState, useEffect, useEffectEvent } from "react";
 import ReactMarkdown from 'react-markdown';
 import ImageViewer from "../imageviewer";
 import { useRouter, useSearchParams } from 'next/navigation'; 
-import { fadeIn, fadeOut } from "@/src/components/transitions";
+import { fadeIn } from "@/src/components/transitions";
 
 function ImageSpread({ imageURLs }: { imageURLs: string[] }) {
   const [viewerOpen, setViewerOpen] = useState(false);
@@ -78,11 +78,14 @@ function PortfolioSpread({
     <div>
       <ImageSpread imageURLs={info.imageURLs} />
       <div className="text-body">
-        <div className="header">{info.projectname}</div>
-        <div>{info.date}</div>
-        <em>{info.dimensions}</em>
-        <br/><br/>
-        <ReactMarkdown>{info.description}</ReactMarkdown>
+        
+        <span style={{marginRight: "1em"}}>{info.date}</span>
+        <span className="header">{info.projectname}</span >
+        
+        <div style={{  marginLeft: "1em"}}>
+          
+          <ReactMarkdown >{info.description}</ReactMarkdown>
+        </div>
       </div>
     </div>
   );
@@ -129,7 +132,6 @@ export default function PortfolioDisplay() {
   }, []);
 
   useEffect(() => {
-    fadeOut("portfolio-column");
     fadeIn("portfolio-column", 200);
 
   }, [currentProject]);

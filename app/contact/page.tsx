@@ -52,6 +52,7 @@ export default function Home() {
           <div>Error fetching portfolio!</div>
       ) : (
         <div className="info">
+          <div className="header">Contact</div>
           {links.map((link, index) => {
             return <AboutLink key={index} linkInfo={link} />;
           })}

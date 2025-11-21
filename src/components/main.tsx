@@ -4,7 +4,6 @@ import DrawingCanvas from "@/src/components/canvas";
 import Menu from "@/src/components/menu";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
-import { fadeOut } from "@/src/components/transitions";
 
 export default function Main({
   children,
@@ -15,9 +14,7 @@ export default function Main({
 
   const pathname = usePathname();
 
-  useEffect(() => {
-    fadeOut("content-area");
-  }, [pathname]);
+  
 
   return (
 

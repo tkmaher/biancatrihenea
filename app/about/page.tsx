@@ -40,6 +40,7 @@ export default function Home() {
         <div>Error fetching portfolio!</div>
       ) : (
         <div className="info">
+          <div className="header">About</div>
           <ReactMarkdown>{about}</ReactMarkdown>
           
         </div>

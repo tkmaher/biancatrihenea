@@ -120,10 +120,17 @@ async function postProject(request, env) {
             projectname = (?),
             date = (?),
             description = (?),
-            dimensions = (?)
+            dimensions = (?),
+            projecttype = (?)
         WHERE
             pid == (?);
-      `).bind(jsonIn["projectname"], jsonIn["date"], jsonIn["description"], jsonIn["dimensions"], jsonIn["pid"]);
+      `).bind(jsonIn["projectname"], 
+              jsonIn["date"], 
+              jsonIn["description"], 
+              jsonIn["dimensions"], 
+              jsonIn["projecttype"],
+              jsonIn["pid"],  // PID ALWAYS LAST!
+      );
       await projRez.all();
       
       return new Response("Successfully received POST.", {

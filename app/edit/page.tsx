@@ -159,7 +159,8 @@ export default function EditPage() {
                 imageURLs: [],
                 description: "",
                 date: "",
-                dimensions: ""
+                dimensions: "",
+                projecttype: "",
             };
             setProjects(prevProjects => [...prevProjects, newProject]);
         } else {

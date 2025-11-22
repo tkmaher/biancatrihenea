@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { projectTypes } from "@/src/constants"
 
 export default function ProjectEditor({
     info,
@@ -11,6 +12,7 @@ export default function ProjectEditor({
       description: string;
       date: string;
       dimensions: string;
+      projecttype: string;
     };
   }) {
     const [updating, setUpdating] = useState(false);
@@ -20,6 +22,7 @@ export default function ProjectEditor({
     const [projectName, setProjectName] = useState(info.projectname);
     const [date, setDate] = useState(info.date);
     const [dimensions, setDimensions] = useState(info.dimensions);
+    const [projectType, setProjectType] = useState(info.projecttype);
 
     const [orderedList, setOrderedList] = useState(
         info.imageURLs.map(url => ({ type: "existing", value: url, file: new Blob(), fname: "" }))
@@ -91,7 +94,8 @@ export default function ProjectEditor({
             projectname: projectName,
             description: description,
             date: date,
-            dimensions: dimensions
+            dimensions: dimensions,
+            projecttype: projectType
         };
         try {
             let response = await fetch(portfolioURL + "?password=" + localStorage.getItem("adminPassword"), {
@@ -143,10 +147,8 @@ export default function ProjectEditor({
         
         function removeImage(index: number) {
             const item = orderedList[index];
-        
             setOrderedList(orderedList.filter((_, i) => i !== index));
         }
-        
 
         return (
             <>
@@ -184,6 +186,14 @@ export default function ProjectEditor({
                 <textarea placeholder="(Supports Markdown)" name="description" style={{width: "100%", height: "100px"}} value={description} onChange={(e) => {setDescription(e.target.value)}}></textarea>
                 <div>Dimensions</div>
                 <input type="text" name="dimensions" value={dimensions} onChange={(e) => {setDimensions(e.target.value)}}/>
+                <div>Project Type</div>
+                {projectTypes.map((type, index) => {
+                    return (<p key={index} style={{paddingLeft: "12px"}}>
+                                <a style={{textDecoration: (projectType == type ? "underline" : "auto")}} onClick={() => setProjectType(type)}>
+                                    {type}
+                                </a>
+                            </p>)
+                })}
                 <div>Images</div>
                 {orderedList.length == 0 && <div>No images uploaded yet.</div>}
                 {orderedList.map((url, index) => {

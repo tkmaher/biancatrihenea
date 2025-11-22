@@ -86,7 +86,6 @@ h2 {
 
 .portfolio-menu-column  {
   left: 8vw;
-  text-align: right;
 }
 
 /* ------- Main Content Column ------- */
@@ -221,9 +220,17 @@ a:hover {
   color: var(--secondary);
 }
 
+.menu-item-portfolio {
+  color: var(--foreground);
+  margin-left: 1em;
+}
+
 .menu-item-portfolio:hover {
   color: var(--secondary);
+  cursor: pointer;
 }
+
+
 
 /* --------------------------------------------------
    Viewer Overlay

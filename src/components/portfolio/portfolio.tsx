@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import ImageViewer from "../imageviewer";
 import { useRouter, useSearchParams } from 'next/navigation'; 
 import { fadeIn } from "@/src/components/transitions";
+import { projectTypes } from "@/src/constants"
 
 function ImageSpread({ imageURLs }: { imageURLs: string[] }) {
   const [viewerOpen, setViewerOpen] = useState(false);
@@ -140,13 +141,9 @@ export default function PortfolioDisplay() {
 
   const MenuItem = ({
     title,
-    date,
-    pid,
     index
   }: {
     title: string;
-    date: string;
-    pid: number;
     index: number; // pid and index are different; pid = row in database while index = row in menu
   }) => (
     <div
@@ -170,15 +167,18 @@ export default function PortfolioDisplay() {
 
   const ProjectMenu = () => (
     <div>
-      {projects.map((project, index) => (
-        <MenuItem
-          key={index}
-          title={project.projectname}
-          date={project.date}
-          pid={project.pid}
-          index={index}
-        />
+      {projectTypes.map((type, index1) => (
+        <div key={index1} >{type}
+            {projects.map((project, index2) => (
+              (project.projecttype === type) && <MenuItem
+                key={index2}
+                title={project.projectname}
+                index={index2}
+              /> 
+            ))}
+        </div>
       ))}
+      
     </div>
   );
 
@@ -197,11 +197,11 @@ export default function PortfolioDisplay() {
     return (
       <div>
         <br/>
-        <a className="left" onClick={backward}>
+        <a onClick={backward}>
           Previous
         </a>
         <br/>
-        <a className="right" onClick={forward}>
+        <a onClick={forward}>
           Next
         </a>
       </div>

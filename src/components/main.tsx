@@ -14,14 +14,7 @@ export default function Main({
   const [infoOpen, setInfoOpen] = useState(false);
   const pathname = usePathname();
 
-  function AboutContainer() {
-    return (
-      <div className={`img-overlay ${infoOpen ? "visible" : "hidden"}`}
-            onClick={() => setInfoOpen(!infoOpen)}>
-        <About />
-      </div>
-    )
-  }
+
 
   return (
 
@@ -30,7 +23,12 @@ export default function Main({
         <Link href="/" style={{width: "100%"}} id="node1">bianca trihenea</Link>
         <a style={{float: "right", zIndex: infoOpen ? 9999 : 1}} onClick={() => setInfoOpen(!infoOpen)}>Info</a>
       </span>
-      <AboutContainer/>
+      <div
+        className={`img-overlay ${infoOpen ? "visible" : "hidden"}`}
+        onClick={() => setInfoOpen(!infoOpen)}
+      >
+        <About />
+      </div>
       <div className="column-flex-container">
         <div id="content-area" key={pathname}>{children}</div>
       </div >        

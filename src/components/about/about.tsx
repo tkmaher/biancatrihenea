@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from 'react-markdown';
 import { fadeIn } from "@/src/components/transitions";
 import Link from "next/link";
@@ -9,12 +9,16 @@ export default function About() {
     const [links, setLinks] = useState<any[]>([]);
     const [about, setAbout] = useState("");
     const [error, setError] = useState(false);
+    const hasFetched = useRef(false);
 
     const workerURL = new URL(
         "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/?page=about"
     );
 
     useEffect(() => {
+        if (hasFetched.current) return;
+        hasFetched.current = true;
+
         const fetchData = async () => {
         try {
             console.log("Fetching data from worker...");
@@ -30,7 +34,9 @@ export default function About() {
             console.error("Error fetching data:", err);
             setError(true);
         } finally {
-            if (!error) fadeIn("content-area", 50);
+            if (!error) {
+                fadeIn("content-area", 50);
+            }
         }
         };
 

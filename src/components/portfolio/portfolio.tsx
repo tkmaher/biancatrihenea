@@ -18,8 +18,10 @@ function ImageSpread({ imageURLs }: { imageURLs: string[] }) {
       if (event.key === "Escape") {
         setViewerOpen(false);
       } else if (event.key === "ArrowRight") {
+        event.preventDefault();
         forwardScroll();
       } else if (event.key === "ArrowLeft") {
+        event.preventDefault();
         backwardScroll();
       }
     };
@@ -142,7 +144,6 @@ export default function PortfolioDisplay() {
 
   const handleScroll = () => { 
     const vwConvert = (window.innerWidth) / 100;
-    console.log(window.scrollX / (vwConvert)); 
     setScrollPercent(Math.max(1 - (Math.sqrt(window.scrollX / (vwConvert) / 16) ), 0.0)); 
   };
 

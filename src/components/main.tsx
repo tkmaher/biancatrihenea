@@ -16,11 +16,9 @@ export default function Main({
 
   function AboutContainer() {
     return (
-      <div className="img-overlay" style={
-          { display: infoOpen ? "auto" : "none" }
-        } onClick={() => setInfoOpen(!infoOpen)}>
-
-        <About/>
+      <div className={`img-overlay ${infoOpen ? "visible" : "hidden"}`}
+            onClick={() => setInfoOpen(!infoOpen)}>
+        <About />
       </div>
     )
   }

@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { swipe } from "./transitions";
 
 export default function ImageViewer(props: { imageSrcs: string[], initialIndex: number}) {
     const len = props.imageSrcs.length;

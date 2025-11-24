@@ -49,11 +49,13 @@ function ImageSpread({ imageURLs }: { imageURLs: string[] }) {
           <button className="img-closer" style={{left: "10px"}} onClick={() => setViewerOpen(false)}>X</button>
           <button className="img-scroller" style={{right: "10px"}} onClick={forwardScroll}>&gt;</button>
           <button className="img-scroller" style={{left: "10px"}} onClick={backwardScroll}>&lt;</button>
-          <ImageViewer imageSrcs={imageURLs} initialIndex={viewerindex}/>
+          <div className="img-overlay" onClick={() => setViewerOpen(false)}>
+            <ImageViewer imageSrcs={imageURLs} initialIndex={viewerindex}/>
+          </div>
         </>
       }
       <div className="image-row-container">
-        {!viewerOpen && imageURLs.map((image, index) => (
+        {imageURLs.map((image, index) => (
             <img className="image-row-container-img" onClick={() => {setViewerIndex(index); setViewerOpen(true)}} key={index} src={image} alt={`Image ${index + 1}`} />
         )) }
         
@@ -99,6 +101,8 @@ export default function PortfolioDisplay() {
   const [projects, setProjects] = useState<any[]>([]);
   const [error, setError] = useState(false);
 
+  const [scrollPercent, setScrollPercent] = useState(1.0);
+
   const workerURL = new URL(
     "https://biancatrihenea-worker.tomaszkkmaher.workers.dev/"
   );
@@ -118,7 +122,7 @@ export default function PortfolioDisplay() {
         setProjects(jsonData);
         if (jsonData.length > 0 && (currentProject < 0 || currentProject >= jsonData.length)) {
           setCurrentProject(0);
-          router.replace('/portfolio?index=0', undefined);
+          router.replace('/?index=0', undefined);
         }
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -134,8 +138,20 @@ export default function PortfolioDisplay() {
 
   useEffect(() => {
     fadeIn("portfolio-column", 200);
-
   }, [currentProject]);
+
+  const handleScroll = () => { 
+    const vwConvert = (window.innerWidth) / 100;
+    console.log(window.scrollX / (vwConvert)); 
+    setScrollPercent(Math.max(1 - (Math.sqrt(window.scrollX / (vwConvert) / 16) ), 0.0)); 
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const numProjects = projects.length;
 
@@ -148,17 +164,13 @@ export default function PortfolioDisplay() {
   }) => (
     <div
       className="menu-item-portfolio"
-      
       style={{
         color: currentProject === index ? "white" : "auto",
       }}
-      id={
-        currentProject === index ? "node3" : ""
-      }
     >
       <a onClick={() => {
         setCurrentProject(index);
-        router.push('/portfolio?index=' + index, undefined);
+        router.push('/?index=' + index, undefined);
       }}>
         {title}
       </a>
@@ -168,7 +180,7 @@ export default function PortfolioDisplay() {
   const ProjectMenu = () => (
     <div>
       {projectTypes.map((type, index1) => (
-        <div key={index1} >{type}
+        <div key={index1} className="type-section">{type}
             {projects.map((project, index2) => (
               (project.projecttype === type) && <MenuItem
                 key={index2}
@@ -186,12 +198,12 @@ export default function PortfolioDisplay() {
     const forward = () => {
       const newProj = (currentProject + 1) % numProjects;
       setCurrentProject(newProj);
-      router.push('/portfolio?index=' + newProj, undefined);
+      router.push('/?index=' + newProj, undefined);
     };
     const backward = () => {
       const newProj = (currentProject - 1 + numProjects) % numProjects;
       setCurrentProject(newProj);
-      router.push('/portfolio?index=' + newProj, undefined);
+      router.push('/?index=' + newProj, undefined);
     };
 
     return (
@@ -214,7 +226,7 @@ export default function PortfolioDisplay() {
         <div>Error fetching portfolio!</div>
       ) : (
         <div className="column-flex-container">
-          <div className="portfolio-menu-column">
+          <div className="portfolio-menu-column" style={{transformOrigin: "left", transform: "scaleX(" + scrollPercent + ")"}}>
             <ProjectMenu />
             <NavBar />
           </div>

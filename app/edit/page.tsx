@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { MouseEvent } from 'react';
-import Menu from "@/src/components/menu";
 import ProjectEditor from "@/src/components/edit/projecteditor";
 import { Navigate } from "react-router-dom";
 import { fadeIn } from "@/src/components/transitions";

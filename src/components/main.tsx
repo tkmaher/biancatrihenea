@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import DrawingCanvas from "@/src/components/canvas";
-import Menu from "@/src/components/menu";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
+import About from "@/src/components/about/about"
 
 export default function Main({
   children,
@@ -11,21 +11,31 @@ export default function Main({
   children: React.ReactNode;
 }>) {
 
-
+  const [infoOpen, setInfoOpen] = useState(false);
   const pathname = usePathname();
 
-  
+  function AboutContainer() {
+    return (
+      <div className="img-overlay" style={
+          { display: infoOpen ? "auto" : "none" }
+        } onClick={() => setInfoOpen(!infoOpen)}>
+
+        <About/>
+      </div>
+    )
+  }
 
   return (
 
     <body style={{position: "relative"}}>
-        <h1>
-          <Link href="/" style={{width: "100%"}} id="node1">bianca trihenea</Link>
-        </h1>
-        <div className="column-flex-container">
-          <Menu />
-          <div id="content-area" key={pathname}>{children}</div>
-        </div >        
+      <span className="title">
+        <Link href="/" style={{width: "100%"}} id="node1">bianca trihenea</Link>
+        <a style={{float: "right", zIndex: infoOpen ? 9999 : 1}} onClick={() => setInfoOpen(!infoOpen)}>Info</a>
+      </span>
+      <AboutContainer/>
+      <div className="column-flex-container">
+        <div id="content-area" key={pathname}>{children}</div>
+      </div >        
       
       <DrawingCanvas />
     </body>

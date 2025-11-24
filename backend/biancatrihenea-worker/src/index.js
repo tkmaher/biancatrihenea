@@ -6,7 +6,6 @@ var __name = (target, value) => __defProp(target, "name", { value, configurable:
 
 const testURL = "https://pub-7d691ed4c6f245279280ca86bc185523.r2.dev"; // real later
 
-// ✅ Add proper CORS headers
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",

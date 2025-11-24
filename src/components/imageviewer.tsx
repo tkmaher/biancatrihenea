@@ -6,7 +6,7 @@ export default function ImageViewer(props: { imageSrcs: string[], initialIndex: 
     const len = props.imageSrcs.length;
 
     return (
-        <div className="img-overlay">
+        <>
             {props.imageSrcs.map((src, index) => (
                     <img className="overlay-image"
                         key={index}
@@ -24,6 +24,6 @@ export default function ImageViewer(props: { imageSrcs: string[], initialIndex: 
                 ))
             }
             
-        </div>
+        </>
     );
 }

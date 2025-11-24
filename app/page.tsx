@@ -1,14 +1,11 @@
-import Image from "next/image";
-import Link from "next/link";
-import Menu from "../src/components/menu";
+import PortfolioDisplay from "@/src/components/portfolio/portfolio";
+import { Suspense } from 'react';
 
-// Written by Tomasz Maher, 2025.
-// https://otherseas1.com
 
-export default function Home() {
+export default function Portfolio() {
   return (
-    <>
-      
-    </>
+    <Suspense fallback={<div>Loading search results...</div>}>
+      <PortfolioDisplay/>
+    </Suspense>
   );
 }

@@ -39,17 +39,25 @@ body {
    Headings
 -------------------------------------------------- */
 .header {
+  color: var(--secondary);
   font-size: 3em;
+}
+
+.info-header {
   color: var(--secondary);
 }
 
-h1 {
-  font-size: 1.5em;
-  font-weight: 500;
-  color: white;
-  margin-bottom: 1em;
+.title {
+
+  color: var(--foreground);
   position: fixed;
-  height: 200px;
+  width: 100%;
+  font-size: 1.2em;
+  z-index: 1;
+  a {
+    transform: translate(-100%, 0%);
+    position: relative;
+  }
 }
 
 h2 {
@@ -65,58 +73,43 @@ h2 {
 .column-flex-container {
   flex: 1;
   display: flex;
-  flex-direction: row;
   gap: 1em;
   width: 100%;
-
+  flex-direction: column;
 }
 
 /* ------- Sidebar Menu ------- */
-.menu-column,
 .portfolio-menu-column {
-  flex: 0 0 8vw;
   min-width: 8vw;
   max-width: 8vw;
-
   position: fixed;
-  align-items: center;
-  top: 8vh;
-  
-}
-
-.portfolio-menu-column  {
-  left: 8vw;
 }
 
 /* ------- Main Content Column ------- */
 #portfolio-column {
-  flex: 1 1 auto;
-  width: 100%;
-  max-width: 100%;
+  position: relative;
+  width: max-content;
+  max-width: none;
   min-width: 0;
   margin-bottom: 3em;
   pointer-events: none;
-  overflow-x: none;
+  left: 8vw;
 }
 
 #content-area {
   opacity: 0;
   transition: opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out;
   width: 84%;
-  margin: 5vh 0 0 16vw;
+  margin: 5vh 0 0 0;
   max-height: 100%;
   transform: none !important;
-}
-
-.column-flex-container {
-  flex-direction: column;
 }
 
 #portfolio-column > div {
   pointer-events: auto;
 }
 
-/* ------- Text Body (IMPORTANT FIX) ------- */
+/* ------- Text Body ------- */
 .text-body {
   width: 80vh;
   max-width: 100%;
@@ -124,61 +117,35 @@ h2 {
   overflow-wrap: break-word;
   overflow-x: none;
 
+  position: sticky; /* makes it stick */
+  left: 1vw; /* stick to left edge */
+}
+
+.about-flex-container {
+  display: flex;
+  gap: 5em;
+  margin: 1em;
+}
+
+.about-area {
+  flex: 1;
 }
 
 /* --------------------------------------------------
    Image Scroller
 -------------------------------------------------- */
 
-/* Force the scroller to be constrained to the viewport and scroll */
 .image-row-container {
   display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;          /* scroll horizontally */
-  overflow-y: hidden;
-  width: 100%;
-  max-width: 100vw;          /* ensures scroll instead of overflow */
+      
   height: 30em;
   -webkit-overflow-scrolling: touch;
-  margin: 0.5em 0 1em 0.5em;
+  margin: 0.5em 4em 1em 1em;
+  
 }
 
-/* On touch devices, shorter height */
-@media only screen and (hover: none) and (pointer: coarse) {
-  .image-row-container {
-    height: 20em;
-  }
 
-  .menu-column,
-  .portfolio-menu-column {
-    min-width: 8vw;
-    max-width: 100%;
 
-    position: relative;
-
-    top: 0;
-    left: 0;
-    transform: none;
-  }
-
-  h1 {
-    position: relative;
-    height: auto;
-  }
-
-  #content-area {
-    margin: 0;
-    width: 100%;
-    max-height: 100%;
-
-  }
-
-  .menu-flex-container {
-    flex: column;
-  }
-}
-
-/* Prevent images from shrinking and allow scrolling */
 .image-row-container-img {
   flex-shrink: 0;
   height: 100%;
@@ -230,7 +197,9 @@ a:hover {
   cursor: pointer;
 }
 
-
+.type-section {
+  
+}
 
 /* --------------------------------------------------
    Viewer Overlay
@@ -261,7 +230,8 @@ a:hover {
 .img-overlay {
   margin: 0;
   position: fixed;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  backdrop-filter: blur(10px);
   width: 100%;
   height: 100%;
   top: 0;
@@ -311,3 +281,58 @@ hr {
   cursor: pointer;
 }
 
+
+/* --------------------------------------------------
+   Mobile styles
+-------------------------------------------------- */
+@media only screen and (hover: none) and (pointer: coarse) {
+  .image-row-container {
+    height: 20em;
+    overflow-x: auto;    
+    margin: 0 0 0 0;      
+  }
+
+  .portfolio-menu-column {
+    min-width: 8vw;
+    max-width: 100%;
+
+    position: relative;
+
+    top: 0;
+    left: 0;
+    transform: none;
+  }
+
+  #portfolio-column {
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  h1 {
+    position: relative;
+    height: auto;
+  }
+
+  #content-area {
+    margin: 0;
+    width: 100%;
+    max-height: 100%;
+
+  }
+
+  .menu-flex-container {
+    flex: column;
+  }
+
+  .title {
+    position: relative;
+    a {
+      transform: none;
+    }
+  }
+
+  .img-overlay {
+    background-color: black;
+  }
+}

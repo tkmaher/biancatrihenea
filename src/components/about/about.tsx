@@ -5,6 +5,25 @@ import ReactMarkdown from 'react-markdown';
 import { fadeIn } from "@/src/components/transitions";
 import Link from "next/link";
 
+function Clock() {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000); // Update every 1000 milliseconds (1 second)
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(timer);
+  }, []); // Empty dependency array ensures the effect runs only once on mount
+
+  return (
+    <div>
+      <p>The current time is {currentTime.toLocaleTimeString()}.</p>
+    </div>
+  );
+};
+
 export default function About() {
     const [links, setLinks] = useState<any[]>([]);
     const [about, setAbout] = useState("");
@@ -58,7 +77,7 @@ export default function About() {
     return (
         <>
         {error ? (
-            <div>Error fetching portfolio!</div>
+            <div>Error fetching about section!</div>
         ) : (
             <div className="about-flex-container">
                 <div className="about-area">
@@ -71,6 +90,7 @@ export default function About() {
                         return <AboutLink key={index} linkInfo={link} />;
                     })}
                 </div>
+                <Clock/>
             </div>
         )}
         </>

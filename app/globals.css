@@ -40,7 +40,7 @@ body {
 -------------------------------------------------- */
 .header {
   color: var(--secondary);
-  font-size: 3em;
+  font-size: 1em;
 }
 
 .info-header {
@@ -119,6 +119,17 @@ h2 {
 
   position: sticky; /* makes it stick */
   left: 1vw; /* stick to left edge */
+
+  .text-description {
+    
+    margin-left: 1em;
+  }
+}
+
+.dimensions {
+  position: fixed !important;
+  right: 1em !important;
+  text-align: right !important;
 }
 
 .about-flex-container {
@@ -140,7 +151,7 @@ h2 {
       
   height: 30em;
   -webkit-overflow-scrolling: touch;
-  margin: 0.5em 4em 1em 1em;
+  margin: 0.5em 1em 1em 1em;
   
 }
 
@@ -197,9 +208,6 @@ a:hover {
   cursor: pointer;
 }
 
-.type-section {
-  
-}
 
 /* --------------------------------------------------
    Viewer Overlay
@@ -334,5 +342,10 @@ hr {
 
   .img-overlay {
     background-color: black;
+  }
+
+  .dimensions {
+    position: relative !important;
+    right: 0em !important;
   }
 }

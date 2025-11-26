@@ -86,9 +86,9 @@ function PortfolioSpread({
         
         <span style={{marginRight: "1em"}}>{info.date}</span>
         <span className="header">{info.projectname}</span >
+        <span className="dimensions">Dimensions: {info.dimensions}<br/></span >
         
-        <div style={{  marginLeft: "1em"}}>
-          
+        <div className="text-description">
           <ReactMarkdown >{info.description}</ReactMarkdown>
         </div>
       </div>
